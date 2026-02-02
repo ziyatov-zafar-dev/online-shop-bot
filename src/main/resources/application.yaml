@@ -8,13 +8,13 @@ spring:
 #    username: postgres
 #    password: 122333
     # Skrinshotdagi 'Internal Database URL' ni shu yerga qo'ying
-    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db
+    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
     username: postgres.oufxlbplqyezflrmkuzl
     password: "KLJAHSN(){APOJS+)(H)*{B(U"
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     generate-ddl: true
     properties:
       hibernate:
