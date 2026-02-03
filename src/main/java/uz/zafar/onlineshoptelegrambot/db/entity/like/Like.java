@@ -8,7 +8,7 @@ import uz.zafar.onlineshoptelegrambot.db.entity.category.Product;
 import java.util.UUID;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "customer-likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "customer_id"})})
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

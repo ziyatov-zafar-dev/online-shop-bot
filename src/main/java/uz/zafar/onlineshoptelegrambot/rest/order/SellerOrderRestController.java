@@ -99,6 +99,7 @@ public class SellerOrderRestController {
         }
         order.setUpdatedAt(LocalDateTime.now());
         shopOrderRepository.save(order);
+//        customerBot.sendMessage();
         return ResponseDto.success();
     }
 
