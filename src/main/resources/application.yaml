@@ -8,9 +8,13 @@ spring:
 #    username: postgres
 #    password: 122333
     # Skrinshotdagi 'Internal Database URL' ni shu yerga qo'ying
-    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
-    username: postgres.oufxlbplqyezflrmkuzl
-    password: "KLJAHSN(){APOJS+)(H)*{B(U"
+#    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
+#    username: postgres.oufxlbplqyezflrmkuzl
+#    password: "KLJAHSN(){APOJS+)(H)*{B(U"
+#    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-d605e9fpm1nc73d2secg-a.oregon-postgres.render.com:5432/db_bq3r
+    username: db_bq3r_user
+    password: "nrg2Mz7JnV6LLsRav7MsanVCLk32GDvj"
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -82,6 +86,7 @@ telegram:
       username: https://t.me/ssasldncabot
       webhook-path: /telegram/super-admin/webhook
 springdoc:
+  override-with-generic-response: false
   swagger-ui:
     path: /swagger
     config-url: /v3/api-docs
@@ -90,7 +95,7 @@ app:
   timezone: Asia/Tashkent
 brevo:
   api:
-    key: ${BREVO_API_KEY}
+    key: ${BREVO_API_KEY:}
 
 verified:
   email:

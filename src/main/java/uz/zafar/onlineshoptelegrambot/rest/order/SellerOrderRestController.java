@@ -100,6 +100,7 @@ public class SellerOrderRestController {
         order.setUpdatedAt(LocalDateTime.now());
         shopOrderRepository.save(order);
 //        customerBot.sendMessage();
+        userBot.sendMessage(order.getCustomer().getChatId(), userMsg.orderInformation(order.getCustomer().getLanguage(), order));
         return ResponseDto.success();
     }
 

@@ -2983,4 +2983,7 @@ public class UserMsg {
         };
     }
 
+    public String changeOrderStatus(Language language, ShopOrder order) {
+        return null;
+    }
 }
