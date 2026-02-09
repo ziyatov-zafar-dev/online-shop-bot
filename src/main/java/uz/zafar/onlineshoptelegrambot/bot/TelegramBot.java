@@ -1772,6 +1772,7 @@ public class TelegramBot {
 
         } catch (IOException e) {
             System.err.println("API so‘rov yuborishda xatolik: " + e.getMessage());
+            System.err.println(escapeJson(jsonBody));
         }
 
         return false;

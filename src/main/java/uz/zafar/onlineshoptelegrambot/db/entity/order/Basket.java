@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "customer_baskets")
+@Table(name = "customer_baskets1")
 public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid", name = "id")
     private UUID pkey;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private BotCustomer customer;
     @ManyToOne(fetch = FetchType.LAZY)

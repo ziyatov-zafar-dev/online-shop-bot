@@ -2,6 +2,7 @@ package uz.zafar.onlineshoptelegrambot.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import uz.zafar.onlineshoptelegrambot.db.entity.order.Basket;
 
 @Entity
 public class AboutWe {
