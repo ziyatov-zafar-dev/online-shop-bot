@@ -1,6 +1,7 @@
 package uz.zafar.onlineshoptelegrambot.rest.admin;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -11,6 +12,7 @@ import uz.zafar.onlineshoptelegrambot.db.entity.ads.AdsButton;
 import uz.zafar.onlineshoptelegrambot.db.entity.ads.AdsButtonResponse;
 import uz.zafar.onlineshoptelegrambot.db.entity.ads.AdsResponse;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
+import uz.zafar.onlineshoptelegrambot.db.entity.bot.seller.BotSeller;
 import uz.zafar.onlineshoptelegrambot.db.repositories.AdsButtonRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.AdsRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
@@ -103,6 +105,24 @@ public class AdminAdsResController {
         return ResponseDto.success(toResponse(adsRepository.save(ads)));
     }
 
+
+    @PutMapping("send/customer/{chatId}")
+    public ResponseEntity<?> send(@PathVariable Long chatId, @RequestParam String text) {
+        BotCustomer customer = botCustomerRepository.checkUser(chatId).orElse(null);
+        if (customer == null) {
+            return ResponseEntity.ok(ResponseDto.error(ErrorCode.ERROR));
+        }
+        return ResponseEntity.ok(ResponseDto.success(customerBot.sendMessage1(chatId, text, null)));
+    }
+
+    @PutMapping("send/seller/{chatId}")
+    public ResponseEntity<ResponseDto<Boolean>> sendSeller(@PathVariable Long chatId, @RequestParam String text) {
+        BotSeller customer = botSellerRepository.checkUser(chatId).orElse(null);
+        if (customer == null) {
+            return ResponseEntity.ok(ResponseDto.error(ErrorCode.ERROR));
+        }
+        return ResponseEntity.ok(ResponseDto.success(customerBot.sendMessage1(chatId, text, null)));
+    }
 
     @PutMapping("send/{type}/{adsId}")
     public ResponseDto<?> send(

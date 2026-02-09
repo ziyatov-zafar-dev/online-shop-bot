@@ -8,16 +8,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.zafar.onlineshoptelegrambot.config.ApiSecurityConfig;
 import uz.zafar.onlineshoptelegrambot.config.TelegramProperties;
+import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
+import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotSellerRepository;
+import uz.zafar.onlineshoptelegrambot.dto.ResponseDto;
 
 @RestController
 @RequestMapping("api/telegram/bot")
 public class BotInfoRestController {
     private final TelegramProperties telegramProperties;
     private final ApiSecurityConfig apiSecurityConfig;
+    private final BotCustomerRepository botCustomerRepository;
+    private final BotSellerRepository botSellerRepository;
 
-    public BotInfoRestController(TelegramProperties telegramProperties, ApiSecurityConfig apiSecurityConfig) {
+    public BotInfoRestController(TelegramProperties telegramProperties, ApiSecurityConfig apiSecurityConfig, BotCustomerRepository botCustomerRepository, BotSellerRepository botSellerRepository) {
         this.telegramProperties = telegramProperties;
         this.apiSecurityConfig = apiSecurityConfig;
+        this.botCustomerRepository = botCustomerRepository;
+        this.botSellerRepository = botSellerRepository;
     }
 
     @GetMapping("all-bots")
@@ -30,6 +37,15 @@ public class BotInfoRestController {
         return ResponseEntity.ok(telegramProperties.getSellers().getBot());
     }
 
+    @GetMapping("customers")
+    public ResponseEntity<?> customers() {
+        return ResponseEntity.ok(ResponseDto.success(botCustomerRepository.findAll()));
+    }
+
+    @GetMapping("sellers")
+    public ResponseEntity<?> sellers() {
+        return ResponseEntity.ok(ResponseDto.success(botSellerRepository.findAll()));
+    }
     @GetMapping("admins")
     public ResponseEntity<?> admins(@RequestHeader(value = "X-API-TOKEN") String token) {
         if (token == null || !token.equals(apiSecurityConfig.getApiToken())) {
