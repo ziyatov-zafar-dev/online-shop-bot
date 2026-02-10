@@ -1,3 +1,0 @@
-verify
-0 ---> request lang
-1 ---> request contact

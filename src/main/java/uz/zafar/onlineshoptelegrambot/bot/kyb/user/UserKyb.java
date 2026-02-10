@@ -720,7 +720,7 @@ public class UserKyb extends Kyb {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        // Row 1: New Order and Message Seller
+
         List<InlineKeyboardButton> row1 = new ArrayList<>();
 //        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
 //        rows.add(row1);
@@ -728,7 +728,7 @@ public class UserKyb extends Kyb {
         row1.add(createButton(language, "message_seller", "message_seller:" + shopOrderId));
         rows.add(row1);
 
-        // Row 2: Go to Shop
+
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         row2.add(createButton(language, "shop", "go_to_shop:" + shopOrderId));
         rows.add(row2);
@@ -771,8 +771,9 @@ public class UserKyb extends Kyb {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         // Row 1: New Order and Message Seller
-        List<InlineKeyboardButton> row1 = new ArrayList<>();
-        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
+        List<InlineKeyboardButton> row1;
+//                = new ArrayList<>();
+//        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
 
         row1 = new ArrayList<>();
         row1.add(createButton(language, "message_seller", "message_seller:" + shopOrderId));
@@ -792,9 +793,9 @@ public class UserKyb extends Kyb {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         // Row 1: New Order
-        List<InlineKeyboardButton> row1 = new ArrayList<>();
-        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
-        rows.add(row1);
+//        List<InlineKeyboardButton> row1 = new ArrayList<>();
+//        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
+//        rows.add(row1);
 
         // Row 2: Go to Shop
         List<InlineKeyboardButton> row2 = new ArrayList<>();
