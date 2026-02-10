@@ -722,9 +722,9 @@ public class UserKyb extends Kyb {
 
         // Row 1: New Order and Message Seller
         List<InlineKeyboardButton> row1 = new ArrayList<>();
-        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
-        rows.add(row1);
-        row1 = new ArrayList<>();
+//        row1.add(createButton(language, "new_order", "new_order:" + shopOrderId));
+//        rows.add(row1);
+//        row1 = new ArrayList<>();
         row1.add(createButton(language, "message_seller", "message_seller:" + shopOrderId));
         rows.add(row1);
 
