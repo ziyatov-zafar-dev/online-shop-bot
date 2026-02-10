@@ -1251,6 +1251,7 @@ public class UsersTelegramBotFunction {
                     return;
                 }
                 case "go_to_shop" -> {
+                    bot.answerCallbackQuery(callbackQueryId, "Ok", false);
                     Shop shop = order.getShop();
                     bot.editMessageText(user.getChatId(), messageId,
                             userMsg.shopInfo(user.getLanguage(), shop)
