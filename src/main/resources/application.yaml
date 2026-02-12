@@ -13,15 +13,6 @@ spring:
     url: jdbc:postgresql://127.0.0.1:5432/sh_z_market_db
     username: zafar_mvps
     password: 122333
-    # Skrinshotdagi 'Internal Database URL' ni shu yerga qo'ying
-  #    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
-  #    username: postgres.oufxlbplqyezflrmkuzl
-  #    password: "KLJAHSN(){APOJS+)(H)*{B(U"
-  #    driver-class-name: org.postgresql.Driver
-  #    url: jdbc:postgresql://dpg-d605e9fpm1nc73d2secg-a.oregon-postgres.render.com:5432/db_bq3r
-  #    username: db_bq3r_user
-  #    password: "nrg2Mz7JnV6LLsRav7MsanVCLk32GDvj"
-  #    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
