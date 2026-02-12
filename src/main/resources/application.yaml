@@ -14,14 +14,14 @@ spring:
     username: zafar_mvps
     password: 122333
     # Skrinshotdagi 'Internal Database URL' ni shu yerga qo'ying
-#    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
-#    username: postgres.oufxlbplqyezflrmkuzl
-#    password: "KLJAHSN(){APOJS+)(H)*{B(U"
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://dpg-d605e9fpm1nc73d2secg-a.oregon-postgres.render.com:5432/db_bq3r
-#    username: db_bq3r_user
-#    password: "nrg2Mz7JnV6LLsRav7MsanVCLk32GDvj"
-#    driver-class-name: org.postgresql.Driver
+  #    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/sh-z-market-bot-db?prepareThreshold=0
+  #    username: postgres.oufxlbplqyezflrmkuzl
+  #    password: "KLJAHSN(){APOJS+)(H)*{B(U"
+  #    driver-class-name: org.postgresql.Driver
+  #    url: jdbc:postgresql://dpg-d605e9fpm1nc73d2secg-a.oregon-postgres.render.com:5432/db_bq3r
+  #    username: db_bq3r_user
+  #    password: "nrg2Mz7JnV6LLsRav7MsanVCLk32GDvj"
+  #    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -73,8 +73,8 @@ telegram:
   base-url: https://codebyz.online
   users:
     bot:
-      token: 7613682792:AAGK6v1xGHdSI1033idh9OP7Xx-jslCwmvA
-      username: https://t.me/sh_z_friends_market_robot
+      token: 7982272479:AAELRO2sr9TJ2Toi7rnyJ_sZMsk9nuhJ-Tk
+      username: https://t.me/oson_market_uz_bot
       webhook-path: /telegram/users/webhook
   admins:
     bot:
@@ -83,8 +83,8 @@ telegram:
       webhook-path: /telegram/admins/webhook
   sellers:
     bot:
-      token: 8564453232:AAGtf3A4Loru1QeyS_kodtyJktPqKenJWe4
-      username: https://t.me/onlineShopSellersBot
+      token: 8470369143:AAG8hTIA1ZU15Dt1o2bFMrq-y0FBCZWXDp0
+      username: https://t.me/Oson_market_sotuvchi_bot
       webhook-path: /telegram/sellers/webhook
   super-admin:
     bot:
