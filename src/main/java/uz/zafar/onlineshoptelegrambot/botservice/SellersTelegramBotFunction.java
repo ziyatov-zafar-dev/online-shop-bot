@@ -582,7 +582,7 @@ public class SellersTelegramBotFunction {
                         getAllProducts(user),
                         sellerProductWebappUrl + "/" + user.getChatId(),
                         data
-                ));ds
+                ));
                 return;
             }
             if (data.startsWith("PRODUCT_")) {
