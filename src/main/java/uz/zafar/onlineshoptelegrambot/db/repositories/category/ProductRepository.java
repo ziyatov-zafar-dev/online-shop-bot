@@ -71,8 +71,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAllByCategoryId(@Param("cid") UUID categoryId);
 
     @Query("""
-            select p from Product p where p.category.pkey=:cid and 
-            p.status=uz.zafar.onlineshoptelegrambot.db.entity.enums.ProductStatus.OPEN 
+            select p from Product p where p.category.pkey=:cid and
+            p.status=uz.zafar.onlineshoptelegrambot.db.entity.enums.ProductStatus.OPEN
             order by p.createdAt asc """)
     List<Product> findAllSellerProductByCategoryId(@Param("cid") UUID pkey);
 

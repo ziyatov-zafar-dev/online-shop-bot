@@ -11,8 +11,6 @@ import uz.zafar.onlineshoptelegrambot.db.entity.common.Discount;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.DiscountType;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.Basket;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.enums.BasketType;
-import uz.zafar.onlineshoptelegrambot.db.entity.order.enums.DeliveryType;
-import uz.zafar.onlineshoptelegrambot.db.entity.shop.Shop;
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BasketRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.category.CategoryRepository;
@@ -22,11 +20,6 @@ import uz.zafar.onlineshoptelegrambot.db.repositories.shop.ShopRepository;
 import uz.zafar.onlineshoptelegrambot.dto.ResponseDto;
 import uz.zafar.onlineshoptelegrambot.dto.customer.CustomerCategoryResponse;
 import uz.zafar.onlineshoptelegrambot.dto.enums.ErrorCode;
-import uz.zafar.onlineshoptelegrambot.dto.gson.AddressDto;
-import uz.zafar.onlineshoptelegrambot.dto.gson.LocationStatus;
-import uz.zafar.onlineshoptelegrambot.dto.order.request.CreateOrderItemRequestDto;
-import uz.zafar.onlineshoptelegrambot.dto.order.request.CreateShopOrderRequestDto;
-import uz.zafar.onlineshoptelegrambot.dto.product.response.CategoryResponse;
 import uz.zafar.onlineshoptelegrambot.dto.product.response.ProductResponse;
 import uz.zafar.onlineshoptelegrambot.dto.product.response.ProductTypeResponse;
 import uz.zafar.onlineshoptelegrambot.mapper.ProductMapper;
@@ -36,9 +29,7 @@ import uz.zafar.onlineshoptelegrambot.service.ProductService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth/product")

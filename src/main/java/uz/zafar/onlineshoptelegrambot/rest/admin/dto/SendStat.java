@@ -9,6 +9,7 @@ public class SendStat {
     public void incSuccess() { success++; }
     public void incFailed() { failed++; }
 
+
     public int getTotal() { return total; }
     public int getSuccess() { return success; }
     public int getFailed() { return failed; }
