@@ -87,55 +87,55 @@ public class SellerCheckingPlan {
     }
 
 
-    @Scheduled(fixedRate = 5 * 60 * 1000)
-    public void checkDaysLeft() {
-        try {
-            final String URL = "https://online-shop-bot-1.onrender.com/api/test";
-            ResponseEntity<String> response = restTemplate.exchange(
-                    URL,
-                    HttpMethod.GET,
-                    null,
-                    String.class
-            );
-            String responseBody = response.getBody();
-            System.out.println("API RESPONSE:");
-            System.out.println(responseBody);
-            sendMessage("%s apiga so'rov yuborildi".formatted(URL));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // @Scheduled(fixedRate = 5 * 60 * 1000)
+    // public void checkDaysLeft() {
+    //     try {
+    //         final String URL = "https://online-shop-bot-1.onrender.com/api/test";
+    //         ResponseEntity<String> response = restTemplate.exchange(
+    //                 URL,
+    //                 HttpMethod.GET,
+    //                 null,
+    //                 String.class
+    //         );
+    //         String responseBody = response.getBody();
+    //         System.out.println("API RESPONSE:");
+    //         System.out.println(responseBody);
+    //         sendMessage("%s apiga so'rov yuborildi".formatted(URL));
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    private void sendMessage(String text) {
+    // private void sendMessage(String text) {
 
-        try {
-            String url = "https://api.telegram.org/bot8144960804:AAFQAI7IAigb1pQhTEiCmA0ZUoDddu6u4NM/sendMessage";
+    //     try {
+    //         String url = "https://api.telegram.org/bot8144960804:AAFQAI7IAigb1pQhTEiCmA0ZUoDddu6u4NM/sendMessage";
 
-            Map<String, Object> body = new HashMap<>();
-            body.put("chat_id", 7882316826L);
-            body.put("text", text);
-            body.put("parse_mode", "HTML"); // ixtiyoriy
+    //         Map<String, Object> body = new HashMap<>();
+    //         body.put("chat_id", 7882316826L);
+    //         body.put("text", text);
+    //         body.put("parse_mode", "HTML"); // ixtiyoriy
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+    //         HttpHeaders headers = new HttpHeaders();
+    //         headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<String> request = new HttpEntity<>(
-                    objectMapper.writeValueAsString(body),
-                    headers
-            );
+    //         HttpEntity<String> request = new HttpEntity<>(
+    //                 objectMapper.writeValueAsString(body),
+    //                 headers
+        //     );
 
-            ResponseEntity<String> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    request,
-                    String.class
-            );
+        //     ResponseEntity<String> response = restTemplate.exchange(
+        //             url,
+        //             HttpMethod.POST,
+        //             request,
+        //             String.class
+        //     );
 
-            System.out.println("Telegram response:");
-            System.out.println(response.getBody());
+        //     System.out.println("Telegram response:");
+        //     System.out.println(response.getBody());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+    // }
 }
