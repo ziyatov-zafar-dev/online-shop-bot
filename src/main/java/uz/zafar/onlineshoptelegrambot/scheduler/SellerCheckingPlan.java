@@ -1,12 +1,10 @@
 package uz.zafar.onlineshoptelegrambot.scheduler;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import uz.zafar.onlineshoptelegrambot.bot.TelegramBot;
 import uz.zafar.onlineshoptelegrambot.bot.kyb.seller.SellerKyb;
 import uz.zafar.onlineshoptelegrambot.bot.msg.SellerMsg;
@@ -20,9 +18,7 @@ import uz.zafar.onlineshoptelegrambot.db.repositories.SubscriptionPlanRepository
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotSellerRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -33,10 +29,6 @@ public class SellerCheckingPlan {
     private final TelegramBot sellerBot;
     private final SellerMsg sellerMsg;
     private final SellerKyb sellerKyb;
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-
     public SellerCheckingPlan(SellerRepository sellerRepository,
                               SubscriptionPlanRepository subscriptionPlanRepository,
                               BotSellerRepository botSellerRepository,

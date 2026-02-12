@@ -72,7 +72,7 @@ public class CategoryRestController {
     public ResponseDto<Void> deleteProduct(@PathVariable("product_id") UUID productId, @PathVariable("chat_id") Long chatId) {
         return productService.deleteProduct(productId, chatId);
     }
-///  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("add-type-to-product/{product_id}/{chat_id}")
     public ResponseDto<?> addTypeToProduct(@PathVariable("product_id") UUID productId,
                                            @RequestBody AddProductTypeRequestDto req,

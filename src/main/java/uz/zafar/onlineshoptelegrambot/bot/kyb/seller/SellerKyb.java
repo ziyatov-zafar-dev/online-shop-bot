@@ -119,6 +119,7 @@ public class SellerKyb extends Kyb {
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         markup.setKeyboard(rows);
+
         return markup;
     }
 

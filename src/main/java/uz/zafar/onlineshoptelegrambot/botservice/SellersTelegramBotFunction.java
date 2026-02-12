@@ -265,6 +265,7 @@ public class SellersTelegramBotFunction {
                 bot.sendMessage(user.getChatId(),
                         msg.yourProductLists(user.getLanguage()),
                         kyb.yourProductLists(user.getLanguage(), products, sellerProductWebappUrl + "/" + user.getChatId(), null));
+                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
             } else if (text.equals(buttons.get(2))) {
             } else if (text.equals(buttons.get(3))) {
                 List<BotSeller> users = sellerRepository.findAllByUserId(user.getUserid());
@@ -580,6 +581,7 @@ public class SellersTelegramBotFunction {
                         sellerProductWebappUrl + "/" + user.getChatId(),
                         data
                 ));
+                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
                 return;
             }
             if (data.startsWith("PRODUCT_")) {

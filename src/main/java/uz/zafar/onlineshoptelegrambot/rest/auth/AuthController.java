@@ -35,7 +35,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @GetMapping("user-info")
     public ResponseDto<?> userInfo(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         if (userPrincipal == null) {
