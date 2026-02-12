@@ -261,11 +261,12 @@ public class SellersTelegramBotFunction {
                     ));
                     return;
                 }
+                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
                 List<Product> products = getAllProducts(user);
                 bot.sendMessage(user.getChatId(),
                         msg.yourProductLists(user.getLanguage()),
                         kyb.yourProductLists(user.getLanguage(), products, sellerProductWebappUrl + "/" + user.getChatId(), null));
-                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
+
             } else if (text.equals(buttons.get(2))) {
             } else if (text.equals(buttons.get(3))) {
                 List<BotSeller> users = sellerRepository.findAllByUserId(user.getUserid());
@@ -575,13 +576,13 @@ public class SellersTelegramBotFunction {
                 return;
             }
             if (data.startsWith("PAGE")) {
+                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
                 bot.editMessageText(user.getChatId(), updateData.getMessageId(), msg.yourProductLists(user.getLanguage()), kyb.yourProductLists(
                         user.getLanguage(),
                         getAllProducts(user),
                         sellerProductWebappUrl + "/" + user.getChatId(),
                         data
-                ));
-                bot.sendMessage(user.getChatId(),sellerProductWebappUrl + "/" + user.getChatId());
+                ));ds
                 return;
             }
             if (data.startsWith("PRODUCT_")) {
