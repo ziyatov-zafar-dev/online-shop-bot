@@ -51,7 +51,7 @@ telegram:
           url: ${VERIFY_SELLER_WEBAPP:}/#
       product:
         webapp:
-          url: ${PRODUCT_SELLER_WEBAPP:}/#
+          url: ${PRODUCT_SELLER_WEBAPP:}
       shop:
         webapp:
           url: ${SHOP_SELLER_WEBAPP:}
