@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface TelegramSellersService {
 
-    void handleUpdate(Map<String, Object> update, HttpServletRequest request) throws Exception;
+    void handleUpdate(Map<String, Object> update,
+                      HttpServletRequest request) throws Exception;
 
 }

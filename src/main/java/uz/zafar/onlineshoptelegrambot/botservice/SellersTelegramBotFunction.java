@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -266,7 +267,6 @@ public class SellersTelegramBotFunction {
                 bot.sendMessage(user.getChatId(),
                         msg.yourProductLists(user.getLanguage()),
                         kyb.yourProductLists(user.getLanguage(), products, sellerProductWebappUrl + "/" + user.getChatId(), null));
-
             } else if (text.equals(buttons.get(2))) {
             } else if (text.equals(buttons.get(3))) {
                 List<BotSeller> users = sellerRepository.findAllByUserId(user.getUserid());
@@ -1307,9 +1307,12 @@ public class SellersTelegramBotFunction {
         g.setFont(new Font("Segoe UI", Font.BOLD, 80));
         g.setColor(new Color(17, 24, 39));
 
-        DecimalFormat formatter = new DecimalFormat("#,##0.00");
-        String formattedAmount = formatter.format(amount);
-        String amountText = formattedAmount.substring(0, formattedAmount.indexOf(",")) + " UZS";
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("uz", "UZ"));
+        formatter.setMaximumFractionDigits(0);
+        String amountText = formatter.format(amount) + " UZS";
+//        String formattedAmount = formatter.format(amount);
+
+//        String amountText = formattedAmount.substring(0, formattedAmount.indexOf(",")) + " UZS";
 //        String amountText = formattedAmount + " UZS";
         int amountTextWidth = g.getFontMetrics().stringWidth(amountText);
         g.drawString(amountText, cardX + (cardWidth - amountTextWidth) / 2, amountY + 110);
