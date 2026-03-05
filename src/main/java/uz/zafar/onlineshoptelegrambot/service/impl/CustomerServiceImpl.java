@@ -6,6 +6,7 @@ import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
 import uz.zafar.onlineshoptelegrambot.dto.ResponseDto;
 import uz.zafar.onlineshoptelegrambot.dto.enums.ErrorCode;
 import uz.zafar.onlineshoptelegrambot.service.CustomerService;
+import uz.zafar.onlineshoptelegrambot.service.EmailService;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {

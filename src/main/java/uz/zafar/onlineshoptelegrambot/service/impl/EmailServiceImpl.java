@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService {
     private final String brevoApiKey;
 
     private static final String SENDER_EMAIL = "codebyzplatform@gmail.com";
-    private static final String SENDER_NAME = "SH-Z MARKET";
+    private static final String SENDER_NAME = "Oson market";
 
     private static final String SHOP_COLOR_PRIMARY = "#FF6B35";
     private static final String SHOP_COLOR_SECONDARY = "#2E86AB";
