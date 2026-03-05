@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import uz.zafar.onlineshoptelegrambot.bot.TelegramBot;
 import uz.zafar.onlineshoptelegrambot.bot.kyb.seller.SellerKyb;
 import uz.zafar.onlineshoptelegrambot.bot.msg.SellerMsg;
+import uz.zafar.onlineshoptelegrambot.botservice.UsersTelegramBotFunction;
+import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.seller.BotSeller;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.seller.enums.SellerEventCode;
 import uz.zafar.onlineshoptelegrambot.db.entity.common.SubscriptionPlan;
@@ -15,6 +17,7 @@ import uz.zafar.onlineshoptelegrambot.db.entity.enums.SubscriptionPlanType;
 import uz.zafar.onlineshoptelegrambot.db.entity.seller.Seller;
 import uz.zafar.onlineshoptelegrambot.db.repositories.SellerRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.SubscriptionPlanRepository;
+import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotSellerRepository;
 
 import java.time.LocalDateTime;
@@ -29,17 +32,33 @@ public class SellerCheckingPlan {
     private final TelegramBot sellerBot;
     private final SellerMsg sellerMsg;
     private final SellerKyb sellerKyb;
+    private final BotCustomerRepository botCustomerRepository;
+    private final UsersTelegramBotFunction functions;
+
     public SellerCheckingPlan(SellerRepository sellerRepository,
                               SubscriptionPlanRepository subscriptionPlanRepository,
                               BotSellerRepository botSellerRepository,
                               @Qualifier("seller") TelegramBot sellerBot,
-                              SellerMsg sellerMsg, SellerKyb sellerKyb) {
+                              SellerMsg sellerMsg, SellerKyb sellerKyb, BotCustomerRepository botCustomerRepository, UsersTelegramBotFunction functions) {
         this.sellerRepository = sellerRepository;
         this.subscriptionPlanRepository = subscriptionPlanRepository;
         this.botSellerRepository = botSellerRepository;
         this.sellerBot = sellerBot;
         this.sellerMsg = sellerMsg;
         this.sellerKyb = sellerKyb;
+        this.botCustomerRepository = botCustomerRepository;
+        this.functions = functions;
+    }
+
+    @Scheduled(
+            fixedRate = 24 * 60 * 60 * 1000 * 2
+    )
+    public void senderTarget() {
+        for (BotCustomer user : botCustomerRepository.findAll()) {
+            try {
+                functions.handleTarget(user.getChatId());
+            } catch (Exception ignored) {}
+        }
     }
 
     @Scheduled(
@@ -114,20 +133,20 @@ public class SellerCheckingPlan {
     //         HttpEntity<String> request = new HttpEntity<>(
     //                 objectMapper.writeValueAsString(body),
     //                 headers
-        //     );
+    //     );
 
-        //     ResponseEntity<String> response = restTemplate.exchange(
-        //             url,
-        //             HttpMethod.POST,
-        //             request,
-        //             String.class
-        //     );
+    //     ResponseEntity<String> response = restTemplate.exchange(
+    //             url,
+    //             HttpMethod.POST,
+    //             request,
+    //             String.class
+    //     );
 
-        //     System.out.println("Telegram response:");
-        //     System.out.println(response.getBody());
+    //     System.out.println("Telegram response:");
+    //     System.out.println(response.getBody());
 
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
+    // } catch (Exception e) {
+    //     e.printStackTrace();
+    // }
     // }
 }
