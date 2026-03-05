@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
 public class PostService {
 
     // Premium emoji ID'lari
-    private static final String INSTAGRAM_EMOJI_ID = "5319160079465857105"; // 📱
-    private static final String TELEGRAM_EMOJI_ID = "5399929490677708779"; // 🌐
-    private static final String FIRE_EMOJI_ID = "5424972470023104089"; // 🔥
-    private static final String STAR_EMOJI_ID = "5316702099747123698"; // ✨
-    private static final String GIFT_EMOJI_ID = "5438240568893260274"; // 🎁
-    private static final String ROCKET_EMOJI_ID = "5382021607357162402"; // 🚀
-    private static final String SMILEY_EMOJI_ID = "5379732256644405206"; // 😊
+    private static final String INSTAGRAM_EMOJI_ID = "5319160079465857105";
+    private static final String TELEGRAM_EMOJI_ID = "5399929490677708779";
+    private static final String FIRE_EMOJI_ID = "5424972470023104089";
+    private static final String STAR_EMOJI_ID = "5316702099747123698";
+    private static final String GIFT_EMOJI_ID = "5438240568893260274";
+    private static final String ROCKET_EMOJI_ID = "5382021607357162402";
+    private static final String SMILEY_EMOJI_ID = "5379732256644405206";
 
     private final String instagramUrl;
     private final String telegramChannelUrl;
