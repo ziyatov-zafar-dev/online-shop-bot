@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import uz.zafar.onlineshoptelegrambot.bot.kyb.common.Kyb;
+import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.CustomerLocation;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.Category;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.Product;
@@ -24,15 +25,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static uz.zafar.onlineshoptelegrambot.db.entity.enums.Language.UZBEK;
+
 @Component
 public class UserKyb extends Kyb {
     private final UserButton userButton;
     private final String productWebappUrl;
+    private final String telegramChannel;
+    private final String instagram;
 
-    public UserKyb(UserButton userButton, @Value("${telegram.app.customer.products.webb-app.url}") String productWebappUrl) {
+    public UserKyb(UserButton userButton, @Value("${telegram.app.customer.products.webb-app.url}") String productWebappUrl,
+                   @Value("${target.customer.telegram-channel}") String telegramChannel,
+                   @Value("${target.customer.instagram}") String instagram) {
         super();
         this.userButton = userButton;
         this.productWebappUrl = productWebappUrl;
+        this.telegramChannel = telegramChannel;
+        this.instagram = instagram;
     }
 
     public ReplyKeyboardMarkup menu(Language l) {
@@ -1003,4 +1012,57 @@ public class UserKyb extends Kyb {
                 .build();
     }
 
+    public InlineKeyboardMarkup targetButtons(BotCustomer user) {
+        Language lang;
+
+        if (user != null) {
+            if (user.getLanguage() == null) {
+                lang = UZBEK;
+            } else {
+                lang = user.getLanguage();
+            }
+        } else {
+            lang = UZBEK;
+        }
+
+        String instagramText;
+        String telegramText;
+
+        switch (lang) {
+            case CYRILLIC -> {
+                instagramText = "📸 Инстаграм";
+                telegramText = "📢 Телеграм канал";
+            }
+            case RUSSIAN -> {
+                instagramText = "📸 Инстаграм";
+                telegramText = "📢 Телеграм канал";
+            }
+            case ENGLISH -> {
+                instagramText = "📸 Instagram";
+                telegramText = "📢 Telegram Channel";
+            }
+            default -> {
+                instagramText = "📸 Instagram";
+                telegramText = "📢 Telegram kanal";
+            }
+        }
+
+        InlineKeyboardButton instagram = InlineKeyboardButton.builder()
+                .text(instagramText)
+                .url("https://instagram.com/yourpage")
+                .build();
+
+        InlineKeyboardButton telegram = InlineKeyboardButton.builder()
+                .text(telegramText)
+                .url("https://t.me/yourchannel")
+                .build();
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        rows.add(List.of(instagram));
+        rows.add(List.of(telegram));
+
+        return InlineKeyboardMarkup.builder()
+                .keyboard(rows)
+                .build();
+    }
 }

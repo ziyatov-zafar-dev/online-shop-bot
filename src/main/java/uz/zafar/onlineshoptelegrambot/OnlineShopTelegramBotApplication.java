@@ -9,9 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class OnlineShopTelegramBotApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(OnlineShopTelegramBotApplication.class, args);
     }
-
 }

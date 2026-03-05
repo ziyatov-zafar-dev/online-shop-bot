@@ -1,6 +1,5 @@
 package uz.zafar.onlineshoptelegrambot.botservice;
 
-import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -19,13 +18,11 @@ import uz.zafar.onlineshoptelegrambot.db.entity.category.Category;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.Product;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.ProductType;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.ProductTypeImage;
-import uz.zafar.onlineshoptelegrambot.db.entity.comment.Comment;
 import uz.zafar.onlineshoptelegrambot.db.entity.common.Discount;
 import uz.zafar.onlineshoptelegrambot.db.entity.contact.ContactWe;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.DiscountType;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.Language;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.ProductStatus;
-import uz.zafar.onlineshoptelegrambot.db.entity.enums.SellerStatus;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.Basket;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.OrderItem;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.ShopOrder;
@@ -1414,5 +1411,9 @@ public class UsersTelegramBotFunction {
         user.setEventCodeLocation(4);
         botCustomerRepository.save(user);
         return;
+    }
+
+    public void handleTarget(Long chatId) {
+        bot.sendMessage(chatId , userMsg.handleTarget(chatId,getUser(chatId)),userKyb.targetButtons(getUser(chatId)));
     }
 }

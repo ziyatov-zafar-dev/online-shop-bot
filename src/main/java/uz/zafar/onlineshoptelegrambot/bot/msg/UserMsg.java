@@ -1,6 +1,7 @@
 package uz.zafar.onlineshoptelegrambot.bot.msg;
 
 import org.apache.commons.codec.language.bm.Lang;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
 import uz.zafar.onlineshoptelegrambot.db.entity.category.Category;
@@ -38,6 +39,9 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static uz.zafar.onlineshoptelegrambot.db.entity.enums.Language.CYRILLIC;
+import static uz.zafar.onlineshoptelegrambot.db.entity.enums.Language.UZBEK;
+
 @Component
 public class UserMsg {
 
@@ -46,11 +50,14 @@ public class UserMsg {
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public UserMsg(ShopRepository shopRepository, ProductTypeRepository productTypeRepository, UserRepository userRepository, OrderItemRepository orderItemRepository) {
+    public UserMsg(ShopRepository shopRepository,
+                   ProductTypeRepository productTypeRepository,
+                   UserRepository userRepository, OrderItemRepository orderItemRepository) {
         this.shopRepository = shopRepository;
         this.productTypeRepository = productTypeRepository;
         this.userRepository = userRepository;
         this.orderItemRepository = orderItemRepository;
+
     }
 
     public String welcomeChooseLang(Language language) {
@@ -300,7 +307,7 @@ public class UserMsg {
         // 3. Narx qismi (chegirma bilan yoki chegirmasiz)
         html.append("<b>%s</b> ".formatted(
                 language == Language.UZBEK ? "Narxi:" : (
-                        language == Language.CYRILLIC ? "Narxi:" :
+                        language == CYRILLIC ? "Narxi:" :
                                 language == Language.ENGLISH ? "Price:" : "Цена:"
                 )
         ));
@@ -330,7 +337,7 @@ public class UserMsg {
         } else if (currentProductType.getStock() < 10) {
             html.append("<code>⚠️ ").append(currentProductType.getStock()).append(" %s</code>\n".formatted(
                     language == Language.UZBEK ? "ta qoldi" : (
-                            language == Language.CYRILLIC ? "та қолди" : (
+                            language == CYRILLIC ? "та қолди" : (
                                     language == Language.RUSSIAN ? "осталось" : "left"
                             )
                     )
@@ -626,7 +633,7 @@ public class UserMsg {
     public String productText(Language language) {
         return "\uD83D\uDECD️ " + (language == Language.UZBEK ? "Mahsulotlar: " :
                 language == Language.RUSSIAN ? "Продукты: " :
-                        language == Language.CYRILLIC ? "Продукты:" :
+                        language == CYRILLIC ? "Продукты:" :
                                 "Products: "); // default
     }
 
@@ -2985,5 +2992,61 @@ public class UserMsg {
 
     public String changeOrderStatus(Language language, ShopOrder order) {
         return null;
+    }
+
+    public String handleTarget(Long chatId, BotCustomer user) {
+        Language lang;
+        if (user != null) {
+            if (user.getLanguage() == null) {
+                lang = UZBEK;
+            } else {
+                lang = user.getLanguage();
+            }
+        } else {
+            lang = UZBEK;
+        }
+        return switch (lang) {
+
+            case UZBEK -> """
+                    😊 Bizni ijtimoiy tarmoqlarda kuzatib boring!
+                    
+                    📱 Eng so‘ngi yangiliklar
+                    🎁 Maxsus chegirmalar
+                    🔥 Ajoyib takliflar
+                    
+                    Barchasini birinchilardan bo‘lib bilib oling! 🚀
+                    """;
+
+            case CYRILLIC -> """
+                    😊 Бизни ижтимоий тармоқларда кузатиб боринг!
+                    
+                    📱 Энг сўнгги янгиликлар
+                    🎁 Махсус чегирмалар
+                    🔥 Ажойиб таклифлар
+                    
+                    Барчасини биринчи бўлиб билиб олинг! 🚀
+                    """;
+
+            case RUSSIAN -> """
+                    😊 Подписывайтесь на нас в социальных сетях!
+                    
+                    📱 Последние новости
+                    🎁 Специальные скидки
+                    🔥 Отличные предложения
+                    
+                    Узнавайте обо всём первыми! 🚀
+                    """;
+
+            case ENGLISH -> """
+                    😊 Follow us on social networks!
+                    
+                    📱 Latest news
+                    🎁 Special discounts
+                    🔥 Great offers
+                    
+                    Be the first to know everything! 🚀
+                    """;
+        };
+
     }
 }
