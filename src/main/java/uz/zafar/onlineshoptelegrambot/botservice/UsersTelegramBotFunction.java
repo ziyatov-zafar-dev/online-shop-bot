@@ -50,6 +50,7 @@ import uz.zafar.onlineshoptelegrambot.dto.order.request.CreateShopOrderRequestDt
 import uz.zafar.onlineshoptelegrambot.dto.order.response.ShopOrderResponse;
 import uz.zafar.onlineshoptelegrambot.service.ApiLocationService;
 import uz.zafar.onlineshoptelegrambot.service.OrderService;
+import uz.zafar.onlineshoptelegrambot.service.PostService;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -86,9 +87,9 @@ public class UsersTelegramBotFunction {
     private final AboutWeRepository aboutWeRepository;
     private final ContactWeRepository contactWeRepository;
     private final SellerVideoRepository sellerVideoRepository;
-
+    private final PostService postService;
     public UsersTelegramBotFunction(@Qualifier("customer") TelegramBot bot, UserMsg userMsg, BotCustomerRepository botCustomerRepository, UserKyb userKyb, UserButton userButton, UserRepository userRepository, CustomerLocationRepository customerLocationRepository, ApiLocationService locationService, CategoryRepository categoryRepository, ProductTypeRepository productTypeRepository, ProductRepository productRepository, ProductTypeImageRepository productTypeImageRepository, BasketRepository basketRepository, ShopRepository shopRepository, OrderService orderService, ShopOrderRepository shopOrderRepository, BotSellerRepository botSellerRepository,
-                                    @Qualifier("seller") TelegramBot sellerBot, TelegramProperties telegramProperties, OrderItemRepository orderItemRepository, AboutWeRepository aboutWeRepository, ContactWeRepository contactWeRepository, SellerVideoRepository sellerVideoRepository) {
+                                    @Qualifier("seller") TelegramBot sellerBot, TelegramProperties telegramProperties, OrderItemRepository orderItemRepository, AboutWeRepository aboutWeRepository, ContactWeRepository contactWeRepository, SellerVideoRepository sellerVideoRepository, PostService postService) {
         this.bot = bot;
         this.userMsg = userMsg;
         this.botCustomerRepository = botCustomerRepository;
@@ -112,6 +113,7 @@ public class UsersTelegramBotFunction {
         this.aboutWeRepository = aboutWeRepository;
         this.contactWeRepository = contactWeRepository;
         this.sellerVideoRepository = sellerVideoRepository;
+        this.postService = postService;
     }
 
     public void start(Long chatId, String firstName, String lastName, String username) {
@@ -1413,7 +1415,8 @@ public class UsersTelegramBotFunction {
         return;
     }
 
+
     public void handleTarget(Long chatId) {
-        bot.sendMessage(chatId , userMsg.handleTarget(chatId,getUser(chatId)),userKyb.targetButtons(getUser(chatId)));
+        postService.handleTarget(chatId,getUser(chatId),bot.getBotToken());
     }
 }
