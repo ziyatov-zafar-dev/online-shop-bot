@@ -347,7 +347,7 @@ public class EmailServiceImpl implements EmailService {
                     <div class="email-container">
                         <!-- Header qismi -->
                         <div class="header">
-                            <div class="logo">SH-Z<span>MARKET</span></div>
+                            <div class="logo">OSON <span>MARKET</span></div>
                             <div class="tagline">Eng yaxshi mahsulotlar, eng qulay narxlarda</div>
                         </div>
                 

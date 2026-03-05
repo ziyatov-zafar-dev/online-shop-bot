@@ -260,6 +260,7 @@ import uz.zafar.onlineshoptelegrambot.db.repositories.category.ProductRepository
 import uz.zafar.onlineshoptelegrambot.db.repositories.category.ProductTypeImageRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.category.ProductTypeRepository;
 import uz.zafar.onlineshoptelegrambot.db.repositories.shop.ShopRepository;
+import uz.zafar.onlineshoptelegrambot.service.impl.EmailServiceImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -319,6 +320,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initSuperAdmin() {
+
         if (userRepository.superadmins().isEmpty()) {
             User user = new User();
             user.setFullName("Ziyatov Zafar");
@@ -326,7 +328,7 @@ public class DataInitializer implements CommandLineRunner {
             user.setRole(UserRole.SUPER_ADMIN);
             user.setPassword(passwordEncoder.encode("12345"));
             user.setUsername("superadmin");
-            user.setEmail("xayr@gmail.com");
+            user.setEmail("ziyatovzafar98@gmail.com");
             user.setEnabled(true);
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
