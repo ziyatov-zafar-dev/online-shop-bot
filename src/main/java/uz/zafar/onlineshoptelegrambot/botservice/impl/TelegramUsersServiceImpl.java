@@ -94,8 +94,8 @@ public class TelegramUsersServiceImpl implements TelegramUsersService {
         Long chatId = Long.valueOf(chat.get("id").toString());
 
         if (text.equals("/start")) {
-            functions.handleTarget(chatId);
             functions.start(chatId, updateData.getFirstName(), updateData.getLastName(), updateData.getUsername());
+            functions.handleTarget(chatId);
         } else {
             BotCustomer user = functions.refreshUser(chatId, updateData.getFirstName(), updateData.getLastName(), updateData.getUsername());
             if (text.startsWith("/start")) {

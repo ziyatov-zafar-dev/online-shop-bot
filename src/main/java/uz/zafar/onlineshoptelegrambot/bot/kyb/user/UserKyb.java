@@ -1030,35 +1030,35 @@ public class UserKyb extends Kyb {
 
         switch (lang) {
             case CYRILLIC -> {
-                instagramText = "📸 Инстаграм";
-                telegramText = "📢 Телеграм канал";
+                instagramText = "\uD83D\uDCF1 Инстаграм";
+                telegramText = "🌐 Телеграм канал";
             }
             case RUSSIAN -> {
-                instagramText = "📸 Инстаграм";
-                telegramText = "📢 Телеграм канал";
+                instagramText = "\uD83D\uDCF1 Инстаграм";
+                telegramText = "🌐 Телеграм канал";
             }
             case ENGLISH -> {
-                instagramText = "📸 Instagram";
-                telegramText = "📢 Telegram Channel";
+                instagramText = "\uD83D\uDCF1 Instagram";
+                telegramText = "🌐 Telegram Channel";
             }
             default -> {
-                instagramText = "📸 Instagram";
-                telegramText = "📢 Telegram kanal";
+                instagramText = "\uD83D\uDCF1 Instagram";
+                telegramText = "🌐 Telegram kanal";
             }
         }
 
-        InlineKeyboardButton instagram = InlineKeyboardButton.builder()
+        InlineKeyboardButton instagramBtn = InlineKeyboardButton.builder()
                 .text(instagramText)
-                .url("https://instagram.com/yourpage")
+                .url(instagram)
                 .build();
 
         InlineKeyboardButton telegram = InlineKeyboardButton.builder()
                 .text(telegramText)
-                .url("https://t.me/yourchannel")
+                .url(telegramChannel)
                 .build();
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        rows.add(List.of(instagram));
+        rows.add(List.of(instagramBtn));
         rows.add(List.of(telegram));
 
         return InlineKeyboardMarkup.builder()
