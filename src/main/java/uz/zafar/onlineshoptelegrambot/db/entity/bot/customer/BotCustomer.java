@@ -6,6 +6,7 @@ import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.enums.CustomerEvent
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.Language;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.enums.DeliveryType;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -38,6 +39,7 @@ public class BotCustomer {
     private String helperPhone;
     @JsonIgnore
     private UUID shopOrderId;
+    private LocalDateTime created;
 
     public UUID getShopOrderId() {
         return shopOrderId;
@@ -157,5 +159,9 @@ public class BotCustomer {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public BotCustomer() {
+        this.created = LocalDateTime.now();
     }
 }

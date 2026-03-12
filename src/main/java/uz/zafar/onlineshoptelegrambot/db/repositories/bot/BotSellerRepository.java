@@ -16,4 +16,8 @@ public interface BotSellerRepository extends JpaRepository<BotSeller, UUID> {
 
     @Query("select u from BotSeller u where u.userid=:uid")
     List<BotSeller> findAllByUserId(@Param("uid") UUID userid);
+
+
+    @Query("select u from BotSeller u order by u.created desc")
+    List<BotSeller> findAll();
 }

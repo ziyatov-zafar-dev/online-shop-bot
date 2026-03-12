@@ -32,6 +32,15 @@ public class BotSeller {
     @JsonIgnore
     private Integer eventCodeLocation;
     private LocalDateTime connectingToSellerAt;
+    private LocalDateTime created;
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
 
     public String getIp() {
         return ip;
@@ -128,5 +137,9 @@ public class BotSeller {
 
     public void setEventCodeLocation(Integer eventCodeLocation) {
         this.eventCodeLocation = eventCodeLocation;
+    }
+
+    public BotSeller() {
+        this.created = LocalDateTime.now();
     }
 }

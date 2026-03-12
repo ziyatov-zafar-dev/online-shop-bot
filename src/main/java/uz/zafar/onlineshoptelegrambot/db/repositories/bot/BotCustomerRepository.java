@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,7 @@ public interface BotCustomerRepository extends JpaRepository<BotCustomer, UUID> 
 
     @Query("select b from BotCustomer b where b.pkey=:ch")
     Optional<BotCustomer> checkUser(@Param("ch") UUID id);
+
+    @Query("select b from BotCustomer b order by b.created desc")
+    List<BotCustomer> findAll();
 }
