@@ -144,6 +144,7 @@ public class UsersTelegramBotFunction {
             user = botCustomerRepository.save(user);
         } else {
             user = new BotCustomer();
+            user.setCreated(LocalDateTime.now());
             user.setChatId(chatId);
             user.setUsername(username);
             user.setFirstName(firstName);

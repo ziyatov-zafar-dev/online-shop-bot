@@ -39,6 +39,15 @@ public class BotCustomer {
     private String helperPhone;
     @JsonIgnore
     private UUID shopOrderId;
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
     private LocalDateTime created;
 
     public UUID getShopOrderId() {
