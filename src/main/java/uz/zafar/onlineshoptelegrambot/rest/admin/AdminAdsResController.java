@@ -237,7 +237,7 @@ public class AdminAdsResController {
 
         if (description != null && !description.isBlank()) {
             caption.append("<i>")
-                    .append(description.replace("==", (fullName)))
+                    .append(description.replace("==", ("<b>"+fullName + "</b>")))
                     .append("</i>");
         }
 
