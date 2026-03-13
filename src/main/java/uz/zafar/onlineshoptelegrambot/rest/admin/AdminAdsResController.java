@@ -202,13 +202,18 @@ public class AdminAdsResController {
                     send = sellerBot.sendPhoto(
                             seller.getChatId(),
                             response.getPhotoUrl(),
-                            getCaption(response.getTitle(), response.getDescription()),
+                            getCaption(response.getTitle(), response.getDescription(),
+                                    seller.getFirstName() + (seller.getLastName() == null ?"":seller.getLastName())
+                            ),
                             markup
                     );
                 } else {
                     send = sellerBot.sendMessage1(
                             seller.getChatId(),
-                            getCaption(response.getTitle(), response.getDescription()),
+                            getCaption(
+                                    response.getTitle(), response.getDescription(),
+                                    seller.getFirstName() + (seller.getLastName() == null ?"":seller.getLastName())
+                            ),
                             markup
                     );
                 }
@@ -221,7 +226,7 @@ public class AdminAdsResController {
     }
 
 
-    private String getCaption(String title, String description) {
+    private String getCaption(String title, String description,String fullName) {
         StringBuilder caption = new StringBuilder();
 
         if (title != null && !title.isBlank()) {
@@ -232,7 +237,7 @@ public class AdminAdsResController {
 
         if (description != null && !description.isBlank()) {
             caption.append("<i>")
-                    .append(description)
+                    .append(description.replace("==", (fullName)))
                     .append("</i>");
         }
 
