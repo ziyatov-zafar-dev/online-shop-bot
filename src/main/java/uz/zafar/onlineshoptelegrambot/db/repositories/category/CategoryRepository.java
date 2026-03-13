@@ -37,12 +37,22 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
             """)
     List<Category> findActiveChildrenByParentId(@Param("parentId") UUID parentId);
 
-    @Query("""
+    /*@Query("""
                 select c
                 from Category c
                 where c.active = true
                   and c.children is empty
                 order by c.orderNumber asc
+            """)
+    List<Category> findAllLeafCategories();*/
+    @Query("""
+             select c
+             from Category c
+             left join Product p on p.category = c
+             where c.active = true
+               and c.children is empty
+             group by c
+             order by count(p) desc
             """)
     List<Category> findAllLeafCategories();
 

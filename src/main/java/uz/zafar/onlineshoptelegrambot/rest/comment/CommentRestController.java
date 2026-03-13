@@ -25,21 +25,7 @@ public class CommentRestController {
 
     @GetMapping("product-commentaries")
     public ResponseEntity<?> all(@RequestParam("productId") UUID pid) {
-        List<Comment> list = commentService.getProductCommentaries(pid).getData();
-        for (Comment comment : list) {
-            BotCustomer customer = comment.getCustomer();
-            customer.setFirstName(customer.getFirstName() + (customer.getLastName() == null ? "" : (" " + customer.getLastName())));
-            customer.setLastName("");
-            comment.setCustomer(customer);
-        }
-        ResponseDto<List<Comment>> success = new ResponseDto<>();
-        success.setData(list);
-        success.setSuccess(true);
-        success.setMessage(new ResponseDto.Message(
-                "Ok", "Ok", "Ok", "Ok"
-        ));
-        success.setErrorCode(ErrorCode.NONE);
-        return ResponseEntity.ok(success);
+        return ResponseEntity.ok(commentService.getProductCommentaries(pid));
     }
 
     @PostMapping("add-comment")
