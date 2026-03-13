@@ -76,8 +76,8 @@ public class CustomerProductRestController {
             if (productRepository.findAllByCategoryId(category.getPkey()).isEmpty()) continue;
             categories.add(toResponseCategory(category));
         }
-//        return categories;
-        return new ArrayList<>();
+        return categories;
+
     }
 
     @GetMapping("category/{categoryId}/children")
