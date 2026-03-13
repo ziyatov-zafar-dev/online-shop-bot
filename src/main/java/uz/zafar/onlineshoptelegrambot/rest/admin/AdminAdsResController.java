@@ -170,13 +170,17 @@ public class AdminAdsResController {
                     send = customerBot.sendPhoto(
                             customer.getChatId(),
                             response.getPhotoUrl(),
-                            getCaption(response.getTitle(), response.getDescription()),
+                            getCaption(response.getTitle(), response.getDescription(),
+                                    customer.getFirstName() + (customer.getLastName() == null ?"":(" "+customer.getLastName()))
+                            ),
                             markup
                     );
                 } else {
                     send = customerBot.sendMessage1(
                             customer.getChatId(),
-                            getCaption(response.getTitle(), response.getDescription()),
+                            getCaption(response.getTitle(), response.getDescription(),
+                                    customer.getFirstName() + (customer.getLastName() == null ?"":(" ")+customer.getLastName())
+                            ),
                             markup
                     );
                 }
@@ -203,7 +207,7 @@ public class AdminAdsResController {
                             seller.getChatId(),
                             response.getPhotoUrl(),
                             getCaption(response.getTitle(), response.getDescription(),
-                                    seller.getFirstName() + (seller.getLastName() == null ?"":seller.getLastName())
+                                    seller.getFirstName() + (seller.getLastName() == null ?"":(" ")+seller.getLastName())
                             ),
                             markup
                     );
@@ -212,7 +216,7 @@ public class AdminAdsResController {
                             seller.getChatId(),
                             getCaption(
                                     response.getTitle(), response.getDescription(),
-                                    seller.getFirstName() + (seller.getLastName() == null ?"":seller.getLastName())
+                                    seller.getFirstName() + (seller.getLastName() == null ?"":(" ")+seller.getLastName())
                             ),
                             markup
                     );
