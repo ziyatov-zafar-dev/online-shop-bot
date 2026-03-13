@@ -121,10 +121,7 @@ public class UsersTelegramBotFunction {
         BotCustomer user = this.refreshUser(chatId, firstName, lastName, username);
         clearBasket(user);
         if (user.getLanguage() == null) {
-            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.UZBEK), true);
-            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.CYRILLIC), true);
-            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.RUSSIAN), true);
-            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.ENGLISH), userKyb.requestLang());
+            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.UZBEK)+"\n\n"+userMsg.welcomeChooseLang(Language.RUSSIAN)+"\n\n"+userMsg.welcomeChooseLang(Language.ENGLISH), userKyb.requestLang());
             user.setEventCode(CustomerEventCode.REQUEST_LANG);
             botCustomerRepository.save(user);
             return;
