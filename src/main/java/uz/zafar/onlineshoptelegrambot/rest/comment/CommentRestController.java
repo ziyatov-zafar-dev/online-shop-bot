@@ -3,11 +3,13 @@ package uz.zafar.onlineshoptelegrambot.rest.comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
+import uz.zafar.onlineshoptelegrambot.db.entity.comment.Comment;
 import uz.zafar.onlineshoptelegrambot.db.repositories.bot.BotCustomerRepository;
 import uz.zafar.onlineshoptelegrambot.dto.ResponseDto;
 import uz.zafar.onlineshoptelegrambot.dto.enums.ErrorCode;
 import uz.zafar.onlineshoptelegrambot.service.CommentService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,7 +25,21 @@ public class CommentRestController {
 
     @GetMapping("product-commentaries")
     public ResponseEntity<?> all(@RequestParam("productId") UUID pid) {
-        return ResponseEntity.ok(commentService.getProductCommentaries(pid));
+        List<Comment> list = commentService.getProductCommentaries(pid).getData();
+        for (Comment comment : list) {
+            BotCustomer customer = comment.getCustomer();
+            customer.setFirstName(customer.getFirstName() + (customer.getLastName() == null ? "" : (" " + customer.getLastName())));
+            customer.setLastName("");
+            comment.setCustomer(customer);
+        }
+        ResponseDto<List<Comment>> success = new ResponseDto<>();
+        success.setData(list);
+        success.setSuccess(true);
+        success.setMessage(new ResponseDto.Message(
+                "Ok", "Ok", "Ok", "Ok"
+        ));
+        success.setErrorCode(ErrorCode.NONE);
+        return ResponseEntity.ok(success);
     }
 
     @PostMapping("add-comment")
