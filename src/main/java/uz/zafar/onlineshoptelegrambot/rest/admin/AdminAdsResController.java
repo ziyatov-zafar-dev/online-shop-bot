@@ -235,7 +235,7 @@ public class AdminAdsResController {
 
         if (title != null && !title.isBlank()) {
             caption.append("<b>")
-                    .append(title)
+                    .append(title.replace("==", ("<b>"+fullName + "</b>")))
                     .append("</b>\n\n");
         }
 
