@@ -77,7 +77,6 @@ public class CustomerProductRestController {
             categories.add(toResponseCategory(category));
         }
         return categories;
-
     }
 
     @GetMapping("category/{categoryId}/children")

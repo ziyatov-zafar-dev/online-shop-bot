@@ -79,11 +79,11 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     /// ///////////////admins
 
     @Query("""
-            select p from Product p order by p.createdAt asc""")
+            select p from Product p order by p.createdAt desc""")
     Page<Product> forAdminProducts(Pageable pageable);
 
     @Query("""
-            select p from Product p where p.status=:status order by p.createdAt asc""")
+            select p from Product p where p.status=:status order by p.createdAt desc""")
     Page<Product> forAdminProducts(Pageable pageable, @Param("status") ProductStatus status);
 
 
