@@ -1019,14 +1019,14 @@ public class AdminExportRestController {
     private void addHeader(Document document, ShopOrder order) throws DocumentException {
         // Company/Shop name
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.DARK_GRAY);
-        Paragraph title = new Paragraph("SH-Z FRIENDS MARKET", titleFont);
+        Paragraph title = new Paragraph("OSON MARKET", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(10);
         document.add(title);
 
         // Invoice title
         Font invoiceFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
-        Paragraph invoice = new Paragraph("BUYURTMA XATI / INVOICE", invoiceFont);
+        Paragraph invoice = new Paragraph("BUYURTMA TAFSILOTI/ORDER DETAILS", invoiceFont);
         invoice.setAlignment(Element.ALIGN_CENTER);
         invoice.setSpacingAfter(20);
         document.add(invoice);
