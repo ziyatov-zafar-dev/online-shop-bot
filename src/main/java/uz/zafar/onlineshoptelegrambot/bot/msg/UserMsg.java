@@ -1,6 +1,7 @@
 package uz.zafar.onlineshoptelegrambot.bot.msg;
 
 import org.apache.commons.codec.language.bm.Lang;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uz.zafar.onlineshoptelegrambot.db.entity.bot.customer.BotCustomer;
@@ -28,6 +29,10 @@ import uz.zafar.onlineshoptelegrambot.dto.order.request.CreateShopOrderRequestDt
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -3048,5 +3053,59 @@ public class UserMsg {
                     """;
         };
 
+    }
+
+    private String getAddressFromCoords(Double lat, Double lon) {
+        String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%s&lon=%s&addressdetails=1", lat, lon);
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("User-Agent", "TelegramBot/1.0") // O'zingizning botingiz nomini yozing
+                    .header("Accept-Language", "uz") // Manzil o'zbek tilida kelishi uchun
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JSONObject jsonResponse = new JSONObject(response.body());
+
+                // Agar xato qaytsa yoki manzil topilmasa
+                if (jsonResponse.has("display_name")) {
+                    return jsonResponse.getString("display_name");
+                } else {
+                    return "Manzil topilmadi";
+                }
+            } else {
+                return "Xatolik: API javob bermadi (" + response.statusCode() + ")";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Manzilni aniqlashda texnik xatolik yuz berdi";
+        }
+    }
+    public String savedLocation(Language language, Double latitude, Double longitude) {
+        // Koordinatalar yordamida manzilni aniqlash (Reverse Geocoding)
+        String address = getAddressFromCoords(latitude, longitude);
+
+        switch (language) {
+            case UZBEK:
+                return String.format("✅ Joylashuvingiz muvaffaqiyatli saqlandi!\n\n📍 **Manzil:** %s", address);
+
+            case CYRILLIC:
+                return String.format("✅ Жойлашувингиз муваффақиятли сақланди!\n\n📍 **Манзил:** %s", address);
+
+            case RUSSIAN:
+                return String.format("✅ Ваше местоположение успешно сохранено!\n\n📍 **Адрес:** %s", address);
+
+            case ENGLISH:
+                return String.format("✅ Your location has been successfully saved!\n\n📍 **Address:** %s", address);
+
+            default:
+                return "📍 Address: " + address;
+        }
     }
 }

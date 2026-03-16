@@ -716,7 +716,9 @@ public class UsersTelegramBotFunction {
             user.setLongitude(longitude);
             user.setEventCodeLocation(4);
             botCustomerRepository.save(user);
-            bot.sendMessage(user.getChatId(), userMsg.savedContact(user.getLanguage()), true);
+            bot.sendMessage(user.getChatId(), userMsg.savedLocation(
+                    user.getLanguage(),latitude,longitude
+            ), true);
             menu(user, "PLACE_ORDER", null, null);
         }
     }
