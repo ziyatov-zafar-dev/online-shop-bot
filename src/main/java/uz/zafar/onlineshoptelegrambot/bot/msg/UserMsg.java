@@ -2095,7 +2095,7 @@ public class UserMsg {
 
 // ==================== FORMAT PRICE ====================
 
-    private String formatPrice(BigDecimal price, Language language) {
+    public String formatPrice(BigDecimal price, Language language) {
         if (price == null) {
             price = BigDecimal.ZERO;
         }

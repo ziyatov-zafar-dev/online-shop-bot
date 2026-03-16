@@ -1516,8 +1516,8 @@ public class UsersTelegramBotFunction {
                 String name = escapeJson(getLangName(product, user.getLanguage()));
                 String description = escapeJson(getLangDescription(product, user.getLanguage()));
                 String botUsername = telegramProperties.getUsers().getBot().getUsername();
-                String price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
-                        ? product.getProductTypes().get(0).getPrice().toString() : "0";
+                BigDecimal price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
+                        ? product.getProductTypes().get(0).getPrice():BigDecimal.ZERO;
 
                 json.append("{");
                 json.append("\"type\": \"article\","); // Ro'yxat eskidek chiqishi uchun Article qoladi
@@ -1533,7 +1533,7 @@ public class UsersTelegramBotFunction {
                 json.append("<b>").append(name).append("</b>\\n");
                 json.append("<i>1</i>\\n\\n");
                 json.append("• ").append(description).append("\\n\\n");
-                json.append("<b>Narxi: ").append(price).append(" so'm</b>\",");
+                json.append("<b>Narxi: ").append(userMsg.formatPrice(price,Language.UZBEK)).append(" so'm</b>\",");
                 json.append("\"parse_mode\": \"HTML\",");
                 json.append("\"disable_web_page_preview\": false"); // Preview yoqilgan bo'lishi shart
                 json.append("},");
