@@ -88,6 +88,7 @@ public class UsersTelegramBotFunction {
     private final ContactWeRepository contactWeRepository;
     private final SellerVideoRepository sellerVideoRepository;
     private final PostService postService;
+
     public UsersTelegramBotFunction(@Qualifier("customer") TelegramBot bot, UserMsg userMsg, BotCustomerRepository botCustomerRepository, UserKyb userKyb, UserButton userButton, UserRepository userRepository, CustomerLocationRepository customerLocationRepository, ApiLocationService locationService, CategoryRepository categoryRepository, ProductTypeRepository productTypeRepository, ProductRepository productRepository, ProductTypeImageRepository productTypeImageRepository, BasketRepository basketRepository, ShopRepository shopRepository, OrderService orderService, ShopOrderRepository shopOrderRepository, BotSellerRepository botSellerRepository,
                                     @Qualifier("seller") TelegramBot sellerBot, TelegramProperties telegramProperties, OrderItemRepository orderItemRepository, AboutWeRepository aboutWeRepository, ContactWeRepository contactWeRepository, SellerVideoRepository sellerVideoRepository, PostService postService) {
         this.bot = bot;
@@ -121,7 +122,7 @@ public class UsersTelegramBotFunction {
         BotCustomer user = this.refreshUser(chatId, firstName, lastName, username);
         clearBasket(user);
         if (user.getLanguage() == null) {
-            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.UZBEK)+"\n\n"+userMsg.welcomeChooseLang(Language.RUSSIAN)+"\n\n"+userMsg.welcomeChooseLang(Language.ENGLISH), userKyb.requestLang());
+            bot.sendMessage(user.getChatId(), userMsg.welcomeChooseLang(Language.UZBEK) + "\n\n" + userMsg.welcomeChooseLang(Language.RUSSIAN) + "\n\n" + userMsg.welcomeChooseLang(Language.ENGLISH), userKyb.requestLang());
             user.setEventCode(CustomerEventCode.REQUEST_LANG);
             botCustomerRepository.save(user);
             return;
@@ -129,7 +130,7 @@ public class UsersTelegramBotFunction {
         user.setEventCode(CustomerEventCode.MENU);
         user.setEventCodeLocation(0);
         botCustomerRepository.save(user);
-        bot.sendMessage(user.getChatId(), userMsg.menu(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
+        bot.sendMessage(user.getChatId(), userMsg.menu(user.getLanguage()), userKyb.menu(user.getLanguage(), user.getChatId()));
     }
 
     public BotCustomer refreshUser(Long chatId, String firstName, String lastName, String username) {
@@ -205,7 +206,7 @@ public class UsersTelegramBotFunction {
                         .filter(order -> (order.getStatus() != ShopOrderStatus.COMPLETED && order.getStatus() != ShopOrderStatus.CANCELLED))
                         .toList();
                 if (orders.isEmpty()) {
-                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
+                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(), user.getChatId()));
                     return;
                 }
                 bot.sendMessage(user.getChatId(), "ㅤㅤ", userKyb.backBtn(user.getLanguage()));
@@ -227,12 +228,12 @@ public class UsersTelegramBotFunction {
 
                 Language l = user.getLanguage();
                 SellerVideo video = sellerVideoRepository.findAll().get(0);
-                bot.sendVideo(user.getChatId(),switch (l) {
+                bot.sendVideo(user.getChatId(), switch (l) {
                     case UZBEK -> video.getVideoUrlUz();
                     case CYRILLIC -> video.getVideoUrlCyr();
                     case RUSSIAN -> video.getVideoUrlRu();
                     case ENGLISH -> video.getVideoUrlEn();
-                },null,userKyb.becomingSellerKyb(user.getLanguage(),telegramProperties.getSellers().getBot().getUsername()));
+                }, null, userKyb.becomingSellerKyb(user.getLanguage(), telegramProperties.getSellers().getBot().getUsername()));
                 return;
             }
             if (menu.get(3).equals(text)) {
@@ -260,6 +261,7 @@ public class UsersTelegramBotFunction {
                 }
                 return;
             }
+            bot.sendMessage(user.getChatId(), userMsg.wrongBtn(user.getLanguage()), userKyb.menu(user.getLanguage(), user.getChatId()));
         } else if (location == 10) {
             List<String> buttons = userButton.requestLang().stream()
                     .map(Button::getText)
@@ -548,7 +550,7 @@ public class UsersTelegramBotFunction {
                     if (order != null) orders.add(order);
                 }
                 if (orders.isEmpty()) {
-                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
+                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(), user.getChatId()));
                     return;
                 }
                 bot.sendMessage(user.getChatId(), "ㅤㅤ", userKyb.backBtn(user.getLanguage()));
@@ -717,7 +719,7 @@ public class UsersTelegramBotFunction {
             user.setEventCodeLocation(4);
             botCustomerRepository.save(user);
             bot.sendMessage(user.getChatId(), userMsg.savedLocation(
-                    user.getLanguage(),latitude,longitude
+                    user.getLanguage(), latitude, longitude
             ), true);
             menu(user, "PLACE_ORDER", null, null);
         }
@@ -1417,6 +1419,6 @@ public class UsersTelegramBotFunction {
 
 
     public void handleTarget(Long chatId) {
-        postService.handleTarget(chatId,getUser(chatId),bot.getBotToken());
+        postService.handleTarget(chatId, getUser(chatId), bot.getBotToken());
     }
 }
