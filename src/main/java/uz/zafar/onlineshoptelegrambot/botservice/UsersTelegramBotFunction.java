@@ -129,7 +129,7 @@ public class UsersTelegramBotFunction {
         user.setEventCode(CustomerEventCode.MENU);
         user.setEventCodeLocation(0);
         botCustomerRepository.save(user);
-        bot.sendMessage(user.getChatId(), userMsg.menu(user.getLanguage()), userKyb.menu(user.getLanguage()));
+        bot.sendMessage(user.getChatId(), userMsg.menu(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
     }
 
     public BotCustomer refreshUser(Long chatId, String firstName, String lastName, String username) {
@@ -205,7 +205,7 @@ public class UsersTelegramBotFunction {
                         .filter(order -> (order.getStatus() != ShopOrderStatus.COMPLETED && order.getStatus() != ShopOrderStatus.CANCELLED))
                         .toList();
                 if (orders.isEmpty()) {
-                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage()));
+                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
                     return;
                 }
                 bot.sendMessage(user.getChatId(), "ㅤㅤ", userKyb.backBtn(user.getLanguage()));
@@ -548,7 +548,7 @@ public class UsersTelegramBotFunction {
                     if (order != null) orders.add(order);
                 }
                 if (orders.isEmpty()) {
-                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage()));
+                    bot.sendMessage(user.getChatId(), userMsg.emptyOrders(user.getLanguage()), userKyb.menu(user.getLanguage(),user.getChatId()));
                     return;
                 }
                 bot.sendMessage(user.getChatId(), "ㅤㅤ", userKyb.backBtn(user.getLanguage()));

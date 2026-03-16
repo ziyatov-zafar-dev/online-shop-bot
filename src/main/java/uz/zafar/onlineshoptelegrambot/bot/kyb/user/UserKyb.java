@@ -44,14 +44,17 @@ public class UserKyb extends Kyb {
         this.instagram = instagram;
     }
 
-    public ReplyKeyboardMarkup menu(Language l) {
+    public ReplyKeyboardMarkup menu(Language l,Long chatId) {
         List<Button> buttons = userButton.menu(l);
         ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
         keyboard.setResizeKeyboard(true);
         keyboard.setOneTimeKeyboard(false);
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
-        row1.add(new KeyboardButton(buttons.get(0).getText()));
+        KeyboardButton b =new KeyboardButton();
+        b.setText(buttons.get(0).getText());
+        b.setWebApp(new WebAppInfo(productWebappUrl + "/" + chatId));
+        row1.add(b);
         rows.add(row1);
         KeyboardRow row2 = new KeyboardRow();
         row2.add(new KeyboardButton(buttons.get(1).getText()));

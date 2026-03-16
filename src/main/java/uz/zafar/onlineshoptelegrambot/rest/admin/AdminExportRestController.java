@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.zafar.onlineshoptelegrambot.config.TelegramProperties;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.ProductStatus;
 
+import uz.zafar.onlineshoptelegrambot.db.entity.enums.SellerStatus;
 import uz.zafar.onlineshoptelegrambot.db.entity.enums.SubscriptionPlanType;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.OrderItem;
 import uz.zafar.onlineshoptelegrambot.db.entity.order.ShopOrder;
