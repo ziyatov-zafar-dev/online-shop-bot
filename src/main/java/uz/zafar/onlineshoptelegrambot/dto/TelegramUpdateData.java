@@ -23,6 +23,7 @@ public class TelegramUpdateData {
     private String callbackQueryId;
     private MessageType type;
 
+
     private List<String> photoFileIds;
     private String videoFileId;
     private String documentFIleId;
@@ -35,7 +36,8 @@ public class TelegramUpdateData {
         PHOTO,
         VIDEO,
         DOCUMENT,
-        UNKNOWN
+        UNKNOWN,
+        INLINE_QUERY
     }
 
     /* ===== GETTERS / SETTERS ===== */

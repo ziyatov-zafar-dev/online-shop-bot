@@ -29,6 +29,16 @@ public class TelegramUsersServiceImpl implements TelegramUsersService {
     @Override
     public void handleUpdate(Map<String, Object> update, HttpServletRequest request) {
         TelegramUpdateData updateData = TelegramUpdateExtractor.extract(update);
+        if (updateData.getType() == TelegramUpdateData.MessageType.INLINE_QUERY) {
+            BotCustomer user = functions.getUser(updateData.getChatId());
+            // Inline qidiruv funksiyasini chaqiramiz
+            functions.handleInlineQuery(
+                    updateData.getCallbackQueryId(), // inline_query_id
+                    updateData.getText(),            // foydalanuvchi yozgan matn
+                    user
+            );
+            return;
+        }
         /* ================= CALLBACK QUERY ================= */
         if (updateData.getType() == TelegramUpdateData.MessageType.CALLBACK) {
             CallbackQuery callback = TelegramCallbackExtractor.extractCallback(update);

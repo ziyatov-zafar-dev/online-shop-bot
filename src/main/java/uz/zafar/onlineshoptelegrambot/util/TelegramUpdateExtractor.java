@@ -43,6 +43,23 @@ public class TelegramUpdateExtractor {
             fillUser(data, from);
             return data;
         }
+        // TelegramUpdateExtractor.java ichiga qo'shing (callback_query tekshiruvidan oldin yoki keyin)
+
+        if (update.containsKey("inline_query")) {
+            Map<String, Object> inlineQuery = (Map<String, Object>) update.get("inline_query");
+            String queryId = inlineQuery.get("id").toString();
+            String queryText = (String) inlineQuery.get("query");
+            Map<String, Object> from = (Map<String, Object>) inlineQuery.get("from");
+
+            data.setType(MessageType.INLINE_QUERY);
+            data.setCallbackQueryId(queryId); // ID ni saqlash uchun ishlatamiz
+            data.setText(queryText); // Foydalanuvchi yozayotgan qidiruv matni
+
+            fillUser(data, from);
+            // Inline queryda chatId bo'lmaydi, shuning uchun userId ni chatId sifatida ishlatish mumkin
+            data.setChatId(data.getUserId());
+            return data;
+        }
 
         /* ================= MESSAGE ================= */
         if (update.containsKey("message")) {

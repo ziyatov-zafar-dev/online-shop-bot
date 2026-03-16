@@ -1734,7 +1734,7 @@ public class TelegramBot {
         }
 
     }*/
-    private boolean sendRequest(HttpURLConnection conn, String jsonBody) {
+    public boolean sendRequest(HttpURLConnection conn, String jsonBody) {
         try {
             if (jsonBody != null && !jsonBody.isBlank()) {
                 try (OutputStream os = conn.getOutputStream()) {

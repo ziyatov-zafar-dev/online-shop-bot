@@ -2,7 +2,14 @@ package uz.zafar.onlineshoptelegrambot.botservice;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import uz.zafar.onlineshoptelegrambot.bot.TelegramBot;
 import uz.zafar.onlineshoptelegrambot.bot.kyb.user.UserButton;
 import uz.zafar.onlineshoptelegrambot.bot.kyb.user.UserKyb;
@@ -1420,5 +1427,137 @@ public class UsersTelegramBotFunction {
 
     public void handleTarget(Long chatId) {
         postService.handleTarget(chatId, getUser(chatId), bot.getBotToken());
+    }
+
+
+    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+        // 1. Bazadan qidirish
+        List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
+
+        try {
+            String apiUrl = "https://api.telegram.org/bot" + telegramProperties.getUsers().getBot().getToken() + "/answerInlineQuery";
+            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // JSON boshlanishi
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"inline_query_id\":\"").append(queryId).append("\",");
+            json.append("\"cache_time\": 60,");
+            json.append("\"results\": [");
+
+            for (int i = 0; i < products.size(); i++) {
+                Product product = products.get(i);
+
+                // Asosiy rasm URLini olish logic (Sizning kodingizdan olindi)
+                String mainImageUrl = extractMainImage(product);
+
+                String name = escapeJson(getLangName(product, user.getLanguage()));
+                String description = escapeJson(getLangDescription(product, user.getLanguage()));
+                String botUsername = telegramProperties.getUsers().getBot().getUsername();
+
+                json.append("{");
+                json.append("\"type\": \"article\",");
+                json.append("\"id\": \"").append(product.getPkey()).append("\",");
+                json.append("\"title\": \"").append(name).append("\",");
+                json.append("\"description\": \"💰 SKU: ").append(escapeJson(product.getSku())).append("\",");
+                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
+
+                // Xabar matni
+                json.append("\"input_message_content\": {");
+                json.append("\"message_text\": \"🛍 <b>").append(name).append("</b>\\n\\n").append(description).append("\",");
+                json.append("\"parse_mode\": \"HTML\"");
+                json.append("},");
+
+                // Tugma (Deep Linking - Botga o'tish)
+                json.append("\"reply_markup\": {");
+                json.append("\"inline_keyboard\": [[{");
+                json.append("\"text\": \"🛒 Sotib olish\",");
+                json.append("\"url\": \"https://t.me/").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
+                json.append("}]]}");
+
+                json.append("}");
+
+                if (i < products.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]}");
+
+            // Sizning sendRequest metodiga yuboramiz
+            bot.sendRequest(conn, json.toString());
+
+        } catch (Exception e) {
+            System.err.println("handleInlineQuery xatosi: " + e.getMessage());
+        }
+    }
+
+
+
+    private String extractMainImage(Product product) {
+        try {
+            if (product.getProductTypes() != null && !product.getProductTypes().isEmpty()) {
+                return product.getProductTypes().stream()
+                        .filter(pt -> !pt.getDeleted())
+                        .flatMap(pt -> pt.getImages().stream())
+                        .filter(img -> !img.getDeleted() && img.getMain())
+                        .findFirst()
+                        .map(ProductTypeImage::getImageUrl)
+                        .orElse(product.getProductTypes().get(0).getImages().get(0).getImageUrl());
+            }
+        } catch (Exception e) {
+            return "https://codebyz.online/uploads/img.png"; // Rasm topilmasa default
+        }
+        return "";
+    }
+    private String escapeJson(String text) {
+        if (text == null) return "";
+
+        return text.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t")
+                .replace("\b", "\\b")
+                .replace("\f", "\\f");
+    }
+// Yordamchi metodlar (Tilga qarab nom va ta'rifni olish)
+
+    private String getLangName(Product p, Language lang) {
+
+        return switch (lang) {
+
+            case RUSSIAN -> p.getNameRu();
+
+            case ENGLISH -> p.getNameEn();
+
+            case CYRILLIC -> p.getNameCyr();
+
+            default -> p.getNameUz();
+
+        };
+
+    }
+
+
+    private String getLangDescription(Product p, Language lang) {
+
+        String desc = switch (lang) {
+
+            case RUSSIAN -> p.getDescriptionRu();
+
+            case ENGLISH -> p.getDescriptionEn();
+
+            case CYRILLIC -> p.getDescriptionCyr();
+
+            default -> p.getDescriptionUz();
+
+        };
+
+        return desc != null ? desc : "";
+
     }
 }
