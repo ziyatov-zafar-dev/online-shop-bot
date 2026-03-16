@@ -1430,7 +1430,7 @@ public class UsersTelegramBotFunction {
     }
 
 
-    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+    /*public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
         // 1. Bazadan qidirish
         List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
 
@@ -1475,7 +1475,7 @@ public class UsersTelegramBotFunction {
                 json.append("\"reply_markup\": {");
                 json.append("\"inline_keyboard\": [[{");
                 json.append("\"text\": \"🛒 Sotib olish\",");
-                json.append("\"url\": \"https://t.me/").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
+                json.append("\"url\": \"").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
                 json.append("}]]}");
 
                 json.append("}");
@@ -1488,6 +1488,66 @@ public class UsersTelegramBotFunction {
             json.append("]}");
 
             // Sizning sendRequest metodiga yuboramiz
+            bot.sendRequest(conn, json.toString());
+
+        } catch (Exception e) {
+            System.err.println("handleInlineQuery xatosi: " + e.getMessage());
+        }
+    }*/
+    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+        List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
+
+        try {
+            String apiUrl = "https://api.telegram.org/bot" + telegramProperties.getUsers().getBot().getToken() + "/answerInlineQuery";
+            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"inline_query_id\":\"").append(queryId).append("\",");
+            json.append("\"cache_time\": 60,");
+            json.append("\"results\": [");
+
+            for (int i = 0; i < products.size(); i++) {
+                Product product = products.get(i);
+                String mainImageUrl = extractMainImage(product);
+                String name = escapeJson(getLangName(product, user.getLanguage()));
+                String description = escapeJson(getLangDescription(product, user.getLanguage()));
+                String botUsername = telegramProperties.getUsers().getBot().getUsername();
+
+                // Narxni olish (ProductType dan yoki Product dan)
+                String price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
+                        ? product.getProductTypes().get(0).getPrice().toString() : "0";
+
+                json.append("{");
+                json.append("\"type\": \"photo\","); // Article o'rniga Photo
+                json.append("\"id\": \"").append(product.getPkey()).append("\",");
+                json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
+
+                // Caption - rasm tagidagi matn (Xuddi rasmdagidek format)
+                json.append("\"caption\": \"<b>").append(name).append("</b>\\n<i>1</i>\\n\\n• ").append(description)
+                        .append("\\n\\n<b>Narxi: ").append(price).append(" so'm</b>\",");
+                json.append("\"parse_mode\": \"HTML\",");
+
+                // Tugma
+                json.append("\"reply_markup\": {");
+                json.append("\"inline_keyboard\": [[{");
+                json.append("\"text\": \"🛒 Sotib olish\",");
+                json.append("\"url\": \"").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
+                json.append("}]]}");
+
+                json.append("}");
+
+                if (i < products.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]}");
+
             bot.sendRequest(conn, json.toString());
 
         } catch (Exception e) {
