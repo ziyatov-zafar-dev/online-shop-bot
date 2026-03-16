@@ -1516,21 +1516,27 @@ public class UsersTelegramBotFunction {
                 String name = escapeJson(getLangName(product, user.getLanguage()));
                 String description = escapeJson(getLangDescription(product, user.getLanguage()));
                 String botUsername = telegramProperties.getUsers().getBot().getUsername();
-
-                // Narxni olish (ProductType dan yoki Product dan)
                 String price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
                         ? product.getProductTypes().get(0).getPrice().toString() : "0";
 
                 json.append("{");
-                json.append("\"type\": \"photo\","); // Article o'rniga Photo
+                json.append("\"type\": \"article\","); // Ro'yxat eskidek chiqishi uchun Article qoladi
                 json.append("\"id\": \"").append(product.getPkey()).append("\",");
-                json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"title\": \"").append(name).append("\",");
                 json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"description\": \"💰 Narxi: ").append(price).append(" so'm\",");
 
-                // Caption - rasm tagidagi matn (Xuddi rasmdagidek format)
-                json.append("\"caption\": \"<b>").append(name).append("</b>\\n<i>1</i>\\n\\n• ").append(description)
-                        .append("\\n\\n<b>Narxi: ").append(price).append(" so'm</b>\",");
+                // BU YERDA SIRI: Matn ichiga rasmni yashirin link (invisible link) qilib qo'shamiz
+                // Shunda Telegram rasmni preview qilib ko'rsatadi (rasmdagidek chiqadi)
+                json.append("\"input_message_content\": {");
+                json.append("\"message_text\": \"<a href=\\\"").append(mainImageUrl).append("\\\">&#160;</a>"); // Bo'sh rasm linki
+                json.append("<b>").append(name).append("</b>\\n");
+                json.append("<i>1</i>\\n\\n");
+                json.append("• ").append(description).append("\\n\\n");
+                json.append("<b>Narxi: ").append(price).append(" so'm</b>\",");
                 json.append("\"parse_mode\": \"HTML\",");
+                json.append("\"disable_web_page_preview\": false"); // Preview yoqilgan bo'lishi shart
+                json.append("},");
 
                 // Tugma
                 json.append("\"reply_markup\": {");
