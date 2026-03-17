@@ -1494,7 +1494,7 @@ public class UsersTelegramBotFunction {
             System.err.println("handleInlineQuery xatosi: " + e.getMessage());
         }
     }*/
-    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+    /*public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
         List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
 
         try {
@@ -1524,24 +1524,93 @@ public class UsersTelegramBotFunction {
                 json.append("\"id\": \"").append(product.getPkey()).append("\",");
                 json.append("\"title\": \"").append(name).append("\",");
                 json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
-                json.append("\"description\": \"💰 Narxi: ").append(price).append(" so'm\",");
+                json.append("\"description\": \"💰 Narxi: ").append(userMsg.formatPrice(price,Language.UZBEK)).append("\",");
 
-                // BU YERDA SIRI: Matn ichiga rasmni yashirin link (invisible link) qilib qo'shamiz
-                // Shunda Telegram rasmni preview qilib ko'rsatadi (rasmdagidek chiqadi)
                 json.append("\"input_message_content\": {");
                 json.append("\"message_text\": \"<a href=\\\"").append(mainImageUrl).append("\\\">&#160;</a>"); // Bo'sh rasm linki
                 json.append("<b>").append(name).append("</b>\\n");
                 json.append("<i>1</i>\\n\\n");
                 json.append("• ").append(description).append("\\n\\n");
-                json.append("<b>Narxi: ").append(userMsg.formatPrice(price,Language.UZBEK)).append(" so'm</b>\",");
+                json.append("<b>Narxi: ").append(userMsg.formatPrice(price,Language.UZBEK)).append(" </b>\",");
                 json.append("\"parse_mode\": \"HTML\",");
                 json.append("\"disable_web_page_preview\": false"); // Preview yoqilgan bo'lishi shart
                 json.append("},");
 
-                // Tugma
                 json.append("\"reply_markup\": {");
                 json.append("\"inline_keyboard\": [[{");
-                json.append("\"text\": \"🛒 Sotib olish\",");
+                json.append("\"text\": \"🛒 Buyurtma berish\",");
+                json.append("\"url\": \"").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
+                json.append("}]]}");
+
+                json.append("}");
+
+                if (i < products.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]}");
+
+            bot.sendRequest(conn, json.toString());
+
+        } catch (Exception e) {
+            System.err.println("handleInlineQuery xatosi: " + e.getMessage());
+        }
+    }*/
+    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+        List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
+
+        try {
+            String apiUrl = "https://api.telegram.org/bot" + telegramProperties.getUsers().getBot().getToken() + "/answerInlineQuery";
+            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"inline_query_id\":\"").append(queryId).append("\",");
+            json.append("\"cache_time\": 60,");
+            json.append("\"results\": [");
+
+            for (int i = 0; i < products.size(); i++) {
+                Product product = products.get(i);
+                String mainImageUrl = extractMainImage(product);
+                String name = escapeJson(getLangName(product, user.getLanguage()));
+                String description = escapeJson(getLangDescription(product, user.getLanguage()));
+                String botUsername = telegramProperties.getUsers().getBot().getUsername();
+                BigDecimal price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
+                        ? product.getProductTypes().get(0).getPrice() : BigDecimal.ZERO;
+
+                json.append("{");
+                json.append("\"type\": \"article\",");
+                json.append("\"id\": \"").append(product.getPkey()).append("\",");
+                json.append("\"title\": \"").append(name).append("\",");
+                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"description\": \"💰 Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("\",");
+
+                json.append("\"input_message_content\": {");
+                // 1. Matn boshiga ko'rinmas link qo'shish (rasm tepada chiqishi uchun)
+                json.append("\"message_text\": \"<a href=\\\"").append(mainImageUrl).append("\\\">&#160;</a>");
+                json.append("<b>").append(name).append("</b>\\n");
+                json.append("<i>1</i>\\n\\n");
+                json.append("• ").append(description).append("\\n\\n");
+                json.append("<b>Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("</b>\",");
+
+                json.append("\"parse_mode\": \"HTML\",");
+
+                // 2. Link preview sozlamalari (Rasm katta va tepada chiqishi uchun)
+                json.append("\"link_preview_options\": {");
+                json.append("\"is_disabled\": false,");
+                json.append("\"url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"prefer_large_media\": true,"); // Rasmni katta qilib ko'rsatish
+                json.append("\"show_above_text\": true");      // Rasmni matndan tepaga qo'yish
+                json.append("}");
+                json.append("},");
+
+                json.append("\"reply_markup\": {");
+                json.append("\"inline_keyboard\": [[{");
+                json.append("\"text\": \"🛒 Buyurtma berish\",");
                 json.append("\"url\": \"").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
                 json.append("}]]}");
 
