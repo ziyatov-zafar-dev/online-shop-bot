@@ -1656,26 +1656,26 @@ public class UsersTelegramBotFunction {
                         ? product.getProductTypes().get(0).getPrice() : BigDecimal.ZERO;
 
                 json.append("{");
-                // 1. Obyekt turi photo bo'ladi (chatga rasm bo'lib borishi uchun)
+                // 1. Photo turidan foydalanamiz - bu haqiqiy rasm yuboradi
                 json.append("\"type\": \"photo\",");
                 json.append("\"id\": \"").append(product.getPkey()).append("\",");
 
-                // 2. Qidiruv listida ko'rinadigan qismlar (Eski list ko'rinishini saqlaydi)
+                // 2. LIST KO'RINISHI: Bu parametrlar siz yuborgan rasmdagi ro'yxatni hosil qiladi
                 json.append("\"title\": \"").append(name).append("\",");
                 json.append("\"description\": \"💰 Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("\",");
                 json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
 
-                // 3. Chatga boradigan haqiqiy rasm URLi
+                // 3. CHATGA BORADIGAN RASYM: Haqiqiy rasm obyekti uchun
                 json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
 
-                // 4. Rasm tagida boradigan Caption (matn)
+                // 4. CAPTION: Rasm tagida boradigan xabar (Oreshkiy misolidagidek)
                 json.append("\"caption\": \"<b>").append(name).append("</b>\\n");
                 json.append("<i>1</i>\\n\\n");
                 json.append("• ").append(description).append("\\n\\n");
                 json.append("<b>Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("</b>\",");
                 json.append("\"parse_mode\": \"HTML\",");
 
-                // 5. Tugma
+                // 5. TUGMA
                 json.append("\"reply_markup\": {");
                 json.append("\"inline_keyboard\": [[{");
                 json.append("\"text\": \"🛒 Buyurtma berish\",");
