@@ -1633,7 +1633,8 @@ public class UsersTelegramBotFunction {
         List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
 
         try {
-            String apiUrl = "https://api.telegram.org/bot" + telegramProperties.getUsers().getBot().getToken() + "/answerInlineQuery";
+            String botToken = telegramProperties.getUsers().getBot().getToken();
+            String apiUrl = "https://api.telegram.org/bot" + botToken + "/answerInlineQuery";
             HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -1655,26 +1656,26 @@ public class UsersTelegramBotFunction {
                         ? product.getProductTypes().get(0).getPrice() : BigDecimal.ZERO;
 
                 json.append("{");
-                // 1. Haqiqiy rasm yuborish uchun turini o'zgartiramiz
+                // 1. Obyekt turi photo bo'ladi (chatga rasm bo'lib borishi uchun)
                 json.append("\"type\": \"photo\",");
                 json.append("\"id\": \"").append(product.getPkey()).append("\",");
 
-                // Photo turi uchun rasm manzillari
-                json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
-                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
-
-                // 2. Sarlavha va tavsif (Bu qidiruv natijalari listida ko'rinadi)
+                // 2. Qidiruv listida ko'rinadigan qismlar (Eski list ko'rinishini saqlaydi)
                 json.append("\"title\": \"").append(name).append("\",");
                 json.append("\"description\": \"💰 Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("\",");
+                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
 
-                // 3. Caption - Rasm tagida boradigan haqiqiy matn
+                // 3. Chatga boradigan haqiqiy rasm URLi
+                json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
+
+                // 4. Rasm tagida boradigan Caption (matn)
                 json.append("\"caption\": \"<b>").append(name).append("</b>\\n");
                 json.append("<i>1</i>\\n\\n");
                 json.append("• ").append(description).append("\\n\\n");
                 json.append("<b>Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("</b>\",");
                 json.append("\"parse_mode\": \"HTML\",");
 
-                // 4. Tugma
+                // 5. Tugma
                 json.append("\"reply_markup\": {");
                 json.append("\"inline_keyboard\": [[{");
                 json.append("\"text\": \"🛒 Buyurtma berish\",");
