@@ -1557,7 +1557,7 @@ public class UsersTelegramBotFunction {
             System.err.println("handleInlineQuery xatosi: " + e.getMessage());
         }
     }*/
-    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+    /*public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
         List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
 
         try {
@@ -1612,6 +1612,73 @@ public class UsersTelegramBotFunction {
                 json.append("\"inline_keyboard\": [[{");
                 json.append("\"text\": \"🛒 Buyurtma berish\",");
                 json.append("\"url\": \"").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
+                json.append("}]]}");
+
+                json.append("}");
+
+                if (i < products.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]}");
+
+            bot.sendRequest(conn, json.toString());
+
+        } catch (Exception e) {
+            System.err.println("handleInlineQuery xatosi: " + e.getMessage());
+        }
+    }*/
+    public void handleInlineQuery(String queryId, String queryText, BotCustomer user) {
+        List<Product> products = productRepository.search(queryText, ProductStatus.OPEN);
+
+        try {
+            String apiUrl = "https://api.telegram.org/bot" + telegramProperties.getUsers().getBot().getToken() + "/answerInlineQuery";
+            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"inline_query_id\":\"").append(queryId).append("\",");
+            json.append("\"cache_time\": 60,");
+            json.append("\"results\": [");
+
+            for (int i = 0; i < products.size(); i++) {
+                Product product = products.get(i);
+                String mainImageUrl = extractMainImage(product);
+                String name = escapeJson(getLangName(product, user.getLanguage()));
+                String description = escapeJson(getLangDescription(product, user.getLanguage()));
+                String botUsername = telegramProperties.getUsers().getBot().getUsername();
+                BigDecimal price = (product.getProductTypes() != null && !product.getProductTypes().isEmpty())
+                        ? product.getProductTypes().get(0).getPrice() : BigDecimal.ZERO;
+
+                json.append("{");
+                // 1. Haqiqiy rasm yuborish uchun turini o'zgartiramiz
+                json.append("\"type\": \"photo\",");
+                json.append("\"id\": \"").append(product.getPkey()).append("\",");
+
+                // Photo turi uchun rasm manzillari
+                json.append("\"photo_url\": \"").append(mainImageUrl).append("\",");
+                json.append("\"thumb_url\": \"").append(mainImageUrl).append("\",");
+
+                // 2. Sarlavha va tavsif (Bu qidiruv natijalari listida ko'rinadi)
+                json.append("\"title\": \"").append(name).append("\",");
+                json.append("\"description\": \"💰 Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("\",");
+
+                // 3. Caption - Rasm tagida boradigan haqiqiy matn
+                json.append("\"caption\": \"<b>").append(name).append("</b>\\n");
+                json.append("<i>1</i>\\n\\n");
+                json.append("• ").append(description).append("\\n\\n");
+                json.append("<b>Narxi: ").append(userMsg.formatPrice(price, Language.UZBEK)).append("</b>\",");
+                json.append("\"parse_mode\": \"HTML\",");
+
+                // 4. Tugma
+                json.append("\"reply_markup\": {");
+                json.append("\"inline_keyboard\": [[{");
+                json.append("\"text\": \"🛒 Buyurtma berish\",");
+                json.append("\"url\": \"https://t.me/").append(botUsername).append("?start=product_").append(product.getPkey()).append("\"");
                 json.append("}]]}");
 
                 json.append("}");
