@@ -87,7 +87,6 @@ public class UserKyb extends Kyb {
 
         List<KeyboardRow> rows = new ArrayList<>();
 
-        // 📍 1-qator: Manzilni yuborish (LOCATION)
         KeyboardButton sendLocationBtn = new KeyboardButton();
         sendLocationBtn.setText(language == Language.UZBEK ? "\uD83D\uDCCD Manzilni yuborish" : (language == Language.CYRILLIC ? "\uD83D\uDCCD Манзилни юбориш" : (language == Language.RUSSIAN ? "\uD83D\uDCCD Отправить локацию" : "\uD83D\uDCCD Send location")));
         sendLocationBtn.setRequestLocation(true);
@@ -95,21 +94,21 @@ public class UserKyb extends Kyb {
         KeyboardRow locationRow = new KeyboardRow();
         locationRow.add(sendLocationBtn);
         rows.add(locationRow);
-
-        if (!locations.isEmpty()) {
-            for (CustomerLocation location : locations) {
-                if (Boolean.TRUE.equals(location.getDeleted())) {
-                    continue;
-                }
-
-                KeyboardButton button = new KeyboardButton();
-                button.setText("🏠 " + location.getAddress());
-
-                KeyboardRow row = new KeyboardRow();
-                row.add(button);
-                rows.add(row);
-            }
-        }
+//
+//        if (!locations.isEmpty()) {
+//            for (CustomerLocation location : locations) {
+//                if (Boolean.TRUE.equals(location.getDeleted())) {
+//                    continue;
+//                }
+//
+//                KeyboardButton button = new KeyboardButton();
+//                button.setText("🏠 " + location.getAddress());
+//
+//                KeyboardRow row = new KeyboardRow();
+//                row.add(button);
+//                rows.add(row);
+//            }
+//        }
 
         KeyboardButton backBtn = new KeyboardButton();
         backBtn.setText(backText(language));
